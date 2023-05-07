@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
-  const [cookie, setCookie] = useCookies(["access_token"]);
+const Navbar = (props) => {
+  const [Cookies, setCookies] = useCookies(["access_token"]);
   const navigate = useNavigate();
 
-  const [userName, setUserName] = useState("");
-
-  useEffect(() => {
-    setUserName(window.localStorage.getItem("username"));
-  }, [cookie]);
-
   const logout = () => {
-    setCookie("access_token", "");
+    setCookies("access_token", "");
     window.localStorage.removeItem("userID");
     window.localStorage.removeItem("username");
-    setUserName("");
     navigate("/login");
   };
+
+  console.log(props.userName);
 
   return (
     <nav className="w-full bg-blue-700 flex justify-start items-center">
@@ -30,7 +25,7 @@ const Navbar = () => {
         >
           Home
         </Link>
-        {!cookie.access_token ? (
+        {!Cookies.access_token ? (
           <>
             <Link
               to="/signup"
@@ -51,10 +46,10 @@ const Navbar = () => {
               to="/notes"
               className="text-3xl text-gray-200 font-light hover:cursor-pointer hover:underline hover:underline-offset-4"
             >
-              notes
+              Notes
             </Link>
             <h1 className="text-2xl lg:ml-40 font-Delicious text-gray-200 underline underline-offset-4">
-              {userName}
+              {props.userName}
             </h1>
             <button
               onClick={logout}

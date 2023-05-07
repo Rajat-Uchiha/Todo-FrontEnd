@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const [_, setCookie] = useCookies(["access_token"]);
+  // const [token, setCookie] = useCookies(["access_token"]);
+  // const [userid, setUserId] = useCookies(["userId"]);
 
   const login = async (e) => {
     e.preventDefault();
@@ -21,7 +23,11 @@ const Login = () => {
       alert("User Logged in Successfully!");
 
       //*Save the token in cookies.
-      setCookie("access_token", response.data.token);
+      // setCookie("access_token", response.data.token);
+      // setUserId("userId", response.data.userID);
+
+      Cookies.set("access_token", response.data.token);
+      Cookies.set("userId", response.data.userID);
 
       //* save the user id in local storage to keep the user logged in even if the user reloads;
       window.localStorage.setItem("userID", response.data.userID);
